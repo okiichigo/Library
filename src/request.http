@@ -1,0 +1,40 @@
+
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "UserName":"Xinchan",
+    "Password":"123456"
+}
+
+###
+GET http://localhost:5000/role
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7IklEIjoxLCJOYW1lIjoibmdvIiwiTGFzdE5hbWUiOiJ4aW4iLCJSb2xlSUQiOjEsIkFjdGl2ZSI6IkFkbWluIn0sImlhdCI6MTcwMzU4ODUxOX0.TXWu5mA8CypM78Lkrpy2vrVdnFdOBTGWqpw5SY-CRF8
+
+
+###
+
+POST http://localhost:5000/createbook
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7IklEIjoxLCJOYW1lIjoibmdvIiwiTGFzdE5hbWUiOiJ4aW4iLCJSb2xlSUQiOjEsIkFjdGl2ZSI6IkFkbWluIn0sImlhdCI6MTcwMzU4ODUxOX0.TXWu5mA8CypM78Lkrpy2vrVdnFdOBTGWqpw5SY-CRF8
+Content-Type: application/json
+
+{
+    "Title":"lovely",
+    "Writer":"bok",
+    "CategoryID":"a",
+    "Summery":"null"
+}
+###
+POST http://localhost:5000/updateBook
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7IklEIjoxLCJOYW1lIjoibmdvIiwiTGFzdE5hbWUiOiJ4aW4iLCJSb2xlSUQiOjEsIkFjdGl2ZSI6IkFkbWluIn0sImlhdCI6MTcwMzU4ODUxOX0.TXWu5mA8CypM78Lkrpy2vrVdnFdOBTGWqpw5SY-CRF8
+Content-Type: application/json
+
+{
+    "Title":"hoa",
+    "Writer":"byyoo",
+    "CategoryID":"b",
+    "Summery":"null",
+    "BookID":"2"
+}
+
+
