@@ -37,4 +37,13 @@ Content-Type: application/json
     "BookID":"2"
 }
 
+###
+POST http://localhost:5000/delete
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7IklEIjoxLCJOYW1lIjoibmdvIiwiTGFzdE5hbWUiOiJ4aW4iLCJSb2xlSUQiOjEsIkFjdGl2ZSI6IkFkbWluIn0sImlhdCI6MTcwMzU4ODUxOX0.TXWu5mA8CypM78Lkrpy2vrVdnFdOBTGWqpw5SY-CRF8
+Content-Type: application/json
+
+{
+    "BookID":"2",
+    "borrow":"0"
+}
 

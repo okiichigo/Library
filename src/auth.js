@@ -8,7 +8,7 @@ const verifyToken = (req, res, next) => {
         console.log("token", token)
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
             console.log(err, data)
-            if (err) res.sendStatus(403)
+            if (err) {res.send({message:"not logging"})}
             res.locals.user = data.payload
             next()
         })
@@ -18,7 +18,7 @@ const verifyToken = (req, res, next) => {
         //return (decoded.RoleID)
     } catch (error) {
         console.log(error)
-        return res.sendStatus(403)
+        return res.send({message:"can not login"})
     }
 }
 module.exports = verifyToken

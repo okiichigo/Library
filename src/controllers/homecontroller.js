@@ -80,44 +80,51 @@ const LogoutToken = (req, res) => {
     } else res.sendStatus(204)
 }
 const CreareClient = async (req, res) => {
-    let name = req.body.name
-    let lastname = req.body.lastname
-    let roleid = req.body.roleid
-    let active = req.body.active
-    let password = req.body.password
-    let username = req.body.username
-    if (roleid == "4") {
+    let name = req.body.Name
+    let lastname = req.body.LastName
+    let password = req.body.Password
+    let username = req.body.UserName
+
+    if (name == "" || lastname == "" || password == "" || username == "") {
+        res.send({ message: "not enough information " })
+    }
+    else {
         try {
             await connection.query(
                 `INSERT INTO People (Name,LastName,RoleID,Active,Password,UserName,refreshtoken)
-    VALUES (?,?,?,?,?,?,?)`, [name, lastname, roleid, active, password, username, null])
+    VALUES (?,?,?,?,?,?,?)`, [name, lastname, 4, true, password, username, null])
+            let [results, fields] = await connection.query("SELECT * FROM People WHERE UserName =? AND Password=?", [username, password]);
+            res.send({ results: results })
         }
         catch { res.send({ message: "username already exist" }) }
-        let [results, fields] = await connection.query("SELECT * FROM People WHERE UserName =? AND Password=?", [username, password]);
-        res.send({ newuser: results })
+
     }
-    else res.sendStatus(403)
 }
+
 const CreateUser = async (req, res) => {
-    let name = req.body.name
-    let lastname = req.body.lastname
-    let roleid = req.body.roleid
-    let active = req.body.active
-    let password = req.body.password
-    let username = req.body.username
+    let name = req.body.Name
+    let lastname = req.body.LastName
+    let roleid = req.body.RoleID
+    let password = req.body.Password
+    let username = req.body.UserName
     let user = res.locals.user
+
+    if (name == "" || lastname == "" || roleid == "" || password == "" || username == "") {
+        res.send({ message: "not enough information " })
+        return
+    }
 
     if (user.RoleID == 1) {
         if (roleid == 1) {
-            res.sendStatus(404)
+            res.send({ message: "you can not create admin as an admin" })
         }
         else if (roleid == 2) {
             try {
                 await connection.query(
                     `INSERT INTO People (Name,LastName,RoleID,Active,Password,UserName,refreshtoken)
-                   VALUES (?,?,?,?,?,?,?)`, [name, lastname, roleid, active, password, username, null])
+                   VALUES (?,?,?,?,?,?,?)`, [name, lastname, roleid, true, password, username, null])
                 let [results, fields] = await connection.query("SELECT * FROM People WHERE UserName =? AND Password=?", [username, password]);
-                res.send({ newuser: results })
+                res.send({ newuser: results[0] })
             }
             catch { res.send({ message: "username already exist" }) }
         }
@@ -125,9 +132,9 @@ const CreateUser = async (req, res) => {
             try {
                 await connection.query(
                     `INSERT INTO People (Name,LastName,RoleID,Active,Password,UserName,refreshtoken)
-               VALUES (?,?,?,?,?,?,?)`, [name, lastname, roleid, active, password, username, null])
+               VALUES (?,?,?,?,?,?,?)`, [name, lastname, roleid, true, password, username, null])
                 let [results, fields] = await connection.query("SELECT * FROM People WHERE UserName =? AND Password=?", [username, password]);
-                res.send({ newuser: results })
+                res.send({ newuser: results[0] })
             }
             catch { res.send({ message: "username already exist" }) }
         }
@@ -135,26 +142,24 @@ const CreateUser = async (req, res) => {
             try {
                 await connection.query(
                     `INSERT INTO People (Name,LastName,RoleID,Active,Password,UserName,refreshtoken)
-                   VALUES (?,?,?,?,?,?,?)`, [name, lastname, roleid, active, password, username, null])
+                   VALUES (?,?,?,?,?,?,?)`, [name, lastname, roleid, true, password, username, null])
                 let [results, fields] = await connection.query("SELECT * FROM People WHERE UserName =? AND Password=?", [username, password]);
-                res.send({ newuser: results })
+                res.send({ newuser: results[0] })
             }
             catch { res.send({ message: "username already exist" }) }
 
         }
-    } else {
-        res.sendStatus(404)
     }
-    if (user.RoleID == 2) {
-        if (roleid == 1) res.sendStatus(404)
-        else if (roleid == 2) res.sendStatus(404)
+    else if (user.RoleID == 2) {
+        if (roleid == 1) { res.send({ message: "you can not" }) }
+        else if (roleid == 2) { res.send({ message: "you can not" }) }
         else if (roleid == 3) {
             try {
                 await connection.query(
                     `INSERT INTO People (Name,LastName,RoleID,Active,Password,UserName,refreshtoken)
-           VALUES (?,?,?,?,?,?,?)`, [name, lastname, roleid, active, password, username, null])
+           VALUES (?,?,?,?,?,?,?)`, [name, lastname, roleid, true, password, username, null])
                 let [results, fields] = await connection.query("SELECT * FROM People WHERE UserName =? AND Password=?", [username, password]);
-                res.send({ newuser: results })
+                res.send({ newuser: results[0] })
             }
             catch { res.send({ message: "username already exist" }) }
         }
@@ -162,33 +167,33 @@ const CreateUser = async (req, res) => {
             try {
                 await connection.query(
                     `INSERT INTO People (Name,LastName,RoleID,Active,Password,UserName,refreshtoken)
-   VALUES (?,?,?,?,?,?,?)`, [name, lastname, roleid, active, password, username, null])
+   VALUES (?,?,?,?,?,?,?)`, [name, lastname, roleid, true, password, username, null])
                 let [results, fields] = await connection.query("SELECT * FROM People WHERE UserName =? AND Password=?", [username, password]);
-                res.send({ newuser: results })
+                res.send({ newuser: results[0] })
             }
             catch { res.send({ message: "username already exist" }) }
         }
     }
-    if (user.RoleID == 3) {
-        if (roleid == 1) { res.sendStatus(404) }
-        else if (roleid == 2) { res.sendStatus(404) }
-        else if (roleid == 3) { res.sendStatus(404) }
+    else if (user.RoleID == 3) {
+        if (roleid == 1) { res.send({ message: "you not admin" }) }
+        else if (roleid == 2) { res.send({ message: "you not leader" }) }
+        else if (roleid == 3) { res.send({ message: "You cannot create a new account" }) }
         else if (roleid == 4) {
             try {
                 await connection.query(
                     `INSERT INTO People (Name,LastName,RoleID,Active,Password,UserName,refreshtoken)
-           VALUES (?,?,?,?,?,?,?)`, [name, lastname, roleid, active, password, username, null])
+           VALUES (?,?,?,?,?,?,?)`, [name, lastname, roleid, true, password, username, null])
                 let [results, fields] = await connection.query("SELECT * FROM People WHERE UserName =? AND Password=?", [username, password]);
-                res.send({ newuser: results })
+                res.send({ newuser: results[0] })
             }
             catch { res.send({ message: "username already exist" }) }
         }
     }
-    if (user.RoleID == 4) {
-        if (roleid == 1) { res.sendStatus(404) }
-        else if (roleid == 2) { res.sendStatus(404) }
-        else if (roleid == 3) { res.sendStatus(404) }
-        else if (roleid == 4) { res.sendStatus(404) }
+    else if (user.RoleID == 4) {
+        if (roleid == 1) { res.send({ message: "you not admin" }) }
+        else if (roleid == 2) { res.send({ message: "you not leader" }) }
+        else if (roleid == 3) { res.send({ message: "you not staff" }) }
+        else if (roleid == 4) { res.send({ message: "You cannot create a new account" }) }
     }
 }
 
